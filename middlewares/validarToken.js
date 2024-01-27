@@ -12,7 +12,7 @@ export const validarToken = async (req, res, next) => {
             });
         }
 
-        const { id } = jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+        const { id } = jwt.verify(token, 'MyS3cr37Keyt0K3N', (err, decoded) => {
             if (err) {
                 throw new Error('Error al validar el token.');
             }
