@@ -24,6 +24,6 @@ app.use('/optimizadas', express.static(path.join(__dirname, '/optimizadas')));
 // rutas de la aplicación
 app.use('/', routerPrincipal);
 
-app.listen(5555, () => {
-    console.log('corriendo');
+app.listen(process.env.PORT, () => {
+    console.log('corriendo en el puerto', process.env.PORT);
 });
