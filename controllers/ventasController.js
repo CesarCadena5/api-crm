@@ -92,7 +92,7 @@ export const listarVentas = async (req, res, next) => {
                 $or: [
                     { total: !isNaN(busqueda) ? { $eq: busqueda } : null },
                 ].filter(cond => cond !== null),
-            }, { limit: parseInt(limit), page: parseInt(page) });
+            }, { limit: parseInt(limit), page: parseInt(page), populate: { path: 'ventas.producto' } });
         } else if (busqueda === '' && lista === 'SI') {
             ventas = await Ventas.paginate({});
         } else {
