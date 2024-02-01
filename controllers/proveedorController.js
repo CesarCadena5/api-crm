@@ -147,13 +147,22 @@ export const actualizarProveedor = async (req, res, next) => {
 };
 
 export const eliminarProveedor = async (req, res, next) => {
+    const { id } = req.params;
+    const { page = 1 } = req.query;
+
     try {
-        const { id } = req.params;
-        const { page = 1 } = req.query;
+        const proveedores = await Proveedores.paginate({}, { limit: 4, page: parseInt(page) });
+
+        const proveedorAsociado = await Productos.find({ proveedor: id });
+        if (proveedorAsociado.length > 0) {
+            return res.status(409).json({
+                msg: 'No se puede eliminar este Proveedor, porque está asociado a un Producto',
+                icon: 'error',
+                proveedores
+            });
+        };
 
         await Proveedores.findByIdAndDelete(id);
-
-        const proveedores = await Proveedores.paginate({}, { limit: 4, page: parseInt(page) });
 
         return res.json({
             msg: 'Proveedor eliminado correctamente.',

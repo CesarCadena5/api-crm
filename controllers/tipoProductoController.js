@@ -1,3 +1,4 @@
+import { Productos } from "../models/Productos.js";
 import { TipoProducto } from "../models/TipoProducto.js";
 
 export const tipoProductoGet = async (req, res) => {
@@ -112,9 +113,18 @@ export const tipoProductoEliminar = async (req, res) => {
     const { page = 1 } = req.query;
 
     try {
-        await TipoProducto.findByIdAndDelete(id);
-
         const tipoProducto = await TipoProducto.paginate({}, { limit: 4, page });
+
+        const tipoProductoAsociado = await Productos.find({ tipoProducto: id });
+        if (tipoProductoAsociado.length > 0) {
+            return res.status(409).json({
+                msg: 'No se puede eliminar este tipo de producto, porque está asociado a un Producto',
+                icon: 'error',
+                tipoProducto
+            });
+        };
+
+        await TipoProducto.findByIdAndDelete(id);
 
         return res.json({
             msg: 'Tipo de producto eliminado con éxito.',
