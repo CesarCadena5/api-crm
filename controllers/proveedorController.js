@@ -1,3 +1,4 @@
+import { Productos } from "../models/Productos.js";
 import { Proveedores } from "../models/Proveedores.js";
 
 export const agregarProveedor = async (req, res, next) => {
@@ -149,7 +150,6 @@ export const actualizarProveedor = async (req, res, next) => {
 export const eliminarProveedor = async (req, res, next) => {
     const { id } = req.params;
     const { page = 1 } = req.query;
-
     try {
         const proveedores = await Proveedores.paginate({}, { limit: 4, page: parseInt(page) });
 
